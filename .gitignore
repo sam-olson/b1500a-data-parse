@@ -1,4 +1,4 @@
 .DS_Store
 *.swp
 test.py
-b1500a/__pycache__/
+*/__pycache__/
