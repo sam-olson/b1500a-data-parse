@@ -33,6 +33,10 @@ class DataFile:
         self.meas_data = self.meas_data.rename(columns={i:j.strip() for i,j in zip(self.meas_data.columns, self.data_col_names)})
 
 class IVSweep(DataFile):
+    """
+    Class that contains data for IV sweep tests (inherits from DataFile object)
+    """
+
     def __init__(self, fpath, smus=3, volt="DrainV", curr="DrainI"):
         super().__init__(fpath, smus)
         self.volts = [float(i) for i in self.meas_data[volt]]
@@ -47,6 +51,21 @@ class IVSweep(DataFile):
         self.i_fit = [(i*self.fit[0])+self.fit[1] for i in self.v_fit]
 
     def plot(self, fit=False, save=False, show=False, color="blue"):
+        """
+        Plots the data
+
+        Parameters
+        ----------
+        fit: whether or not to display the fitted curve (boolean)
+        save: whether or not to save the image (False if no save, provide a file path if yes save)
+        show: whether or not to show the image (boolean)
+        color: color of plotted line
+
+        Returns
+        ----------
+        None (plots/saves/shows data)
+        """
+
         plt.plot(self.volts, self.current, color=color, label=self.metadata["DeviceName"])
         if fit:
             plt.plot(self.v_fit, self.i_fit, linestyle="--", color="black")
@@ -60,6 +79,19 @@ class IVSweep(DataFile):
             plt.show()
 
     def change_units(self, parameter, unit):
+        """
+        Updates units to provided scale
+
+        Parameters
+        ----------
+        parameter: which data parameter to change (currently only voltage ('V') or current ('I'))
+        unit: which unit to change to (see config.UNITS for options)
+
+        Returns
+        ----------
+        None (updates corresponding parameter)
+        """
+
         if parameter.upper() == "V":
             if self.volt_units != "":
                 self.volts = [i*UNITS[unit] for i in self.volts]
@@ -89,6 +121,10 @@ class IVSweep(DataFile):
 
 
 class GateSweep(DataFile):
+    """
+    Class that contains data for gate sweep tests (inherits from DataFile object)
+    """
+
     def __init__(self, fpath, smus=3, volt="GateV", curr="DrainI"):
         super().__init__(fpath, smus)
         self.volts = [float(i) for i in self.meas_data[volt]]
@@ -103,6 +139,21 @@ class GateSweep(DataFile):
         self.i_fit = [(i*i*self.fit[0])+(i*self.fit[1])+self.fit[2] for i in self.v_fit]
 
     def plot(self, fit=False, save=False, show=False, color="blue"):
+        """
+        Plots the data
+
+        Parameters
+        ----------
+        fit: whether or not to display the fitted curve (boolean)
+        save: whether or not to save the image (False if no save, provide a file path if yes save)
+        show: whether or not to show the image (boolean)
+        color: color of plotted line
+
+        Returns
+        ----------
+        None (plots/saves/shows data)
+        """
+
         plt.plot(self.volts, self.current, color=color, label=self.metadata["DeviceName"])
 
         if fit:
@@ -116,6 +167,19 @@ class GateSweep(DataFile):
             plt.show()
 
     def change_units(self, parameter, unit):
+        """
+        Updates units to provided scale
+
+        Parameters
+        ----------
+        parameter: which data parameter to change (currently only voltage ('V') or current ('I'))
+        unit: which unit to change to (see config.UNITS for options)
+
+        Returns
+        ----------
+        None (updates corresponding parameter)
+        """
+
         if parameter.upper() == "V":
             if self.volt_units != "":
                 self.volts = [i*UNITS[unit] for i in self.volts]

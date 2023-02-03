@@ -3,6 +3,17 @@ import re
 import numpy as np
 
 def handle_re(re_result):
+    """
+    Handles the results of a regular expression match (selects match and removes extra whitespace)
+
+    Parameters
+    ----------
+    re_result: result of an re.match match
+
+    Returns
+    ----------
+    Processed string if match, or None if no match
+    """
     if re_result:
         return re_result.group(1).strip()
     else:

@@ -34,6 +34,7 @@ class App(tk.Frame):
         """
         Method for building out sub-frames
         """
+
         self.file_input_frame = tk.LabelFrame(self)
         self.file_input_frame.grid(column=0, row=0, columnspan=3, rowspan=2, sticky="wens")
 
@@ -130,6 +131,7 @@ class App(tk.Frame):
         """
         Choose folder button handler
         """
+
         self.folder = fd.askdirectory()
         if self.folder:
             self.file_names = [i for i in os.listdir(self.folder) if i.endswith(".csv")]
